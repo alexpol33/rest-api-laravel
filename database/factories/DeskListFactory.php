@@ -22,7 +22,10 @@ class DeskListFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->text(10),
+            'desk_id' => rand(1, 30),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }
