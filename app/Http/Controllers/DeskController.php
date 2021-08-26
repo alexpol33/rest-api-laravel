@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\DeskResource;
 use App\Models\Desk;
 use Illuminate\Http\Request;
 
@@ -10,11 +11,11 @@ class DeskController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
-        return Desk::all();
+        return DeskResource::collection(Desk::all());
     }
 
     /**
@@ -32,11 +33,11 @@ class DeskController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function show($id)
     {
-       return Desk::find($id);
+       return DeskResource::collection(Desk::findOrFail($id));
     }
 
     /**
