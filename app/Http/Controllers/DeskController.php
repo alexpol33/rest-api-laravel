@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeskStoreRequest;
 use App\Http\Resources\DeskResource;
 use App\Models\Desk;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use function GuzzleHttp\Promise\all;
 
@@ -23,11 +25,12 @@ class DeskController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return DeskResource
+     * @return \Illuminate\Http\Response
+     *
      */
-    public function store(Request $request)
+    public function store(DeskStoreRequest $request)
     {
-        $created_desk = Desk::create($request->all());
+        $created_desk = Desk::create($request->validated());
         return new DeskResource($created_desk);
     }
 
