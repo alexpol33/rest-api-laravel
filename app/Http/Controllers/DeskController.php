@@ -7,7 +7,7 @@ use App\Http\Resources\DeskResource;
 use App\Models\Desk;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use function GuzzleHttp\Promise\all;
+use Illuminate\Http\Response;
 
 class DeskController extends Controller
 {
@@ -38,11 +38,11 @@ class DeskController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-       return DeskResource::collection(Desk::with('lists')->findOrFail($id));
+       return new DeskResource(Desk::with('lists')->findOrFail($id));
     }
 
     /**
@@ -52,9 +52,11 @@ class DeskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(DeskStoreRequest $request, Desk $desk)
     {
-        //
+        $desk->update($request->validated());
+
+        return new DeskResource($desk);
     }
 
     /**
@@ -63,8 +65,9 @@ class DeskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Desk $desk)
     {
-        //
+        $desk->delete();
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }
